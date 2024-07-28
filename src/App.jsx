@@ -5,10 +5,11 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import MainLayout from './layouts/MainLayout.JSX';
-import RecipeSearch from './components/RecipeSearch';
+import MainLayout from './layouts/MainLayout'; // Import the MainLayout component
 
-import NotFoundPage from './pages/NotFoundPage';
+import RecipeSearch from './pages/RecipeSearch';
+
+
 
 
 
@@ -17,7 +18,7 @@ const router = createBrowserRouter(
     <Route path='/' element={<MainLayout/>}>
       <Route index element={<HomePage/>} />
       <Route path='/search' element={<RecipeSearch/>} />/
-      <Route path='*' element={<NotFoundPage/>} />
+      
     </Route>
   )
 );
