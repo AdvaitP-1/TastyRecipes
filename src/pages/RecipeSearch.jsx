@@ -16,6 +16,8 @@ function RecipeSearch() {
   const [loading, setLoading] = useState(false);
   const [servings, setServings] = useState(0);
   const [priceBreakdown, setPriceBreakdown] = useState(null);
+  const [randomRecipe, setRandomRecipe] = useState(null);
+  const [similarRecipes, setSimilarRecipes] = useState([]);
 
   useEffect(() => {
     if (selectedRecipe) {
@@ -56,7 +58,7 @@ function RecipeSearch() {
   const getRecipeDetails = async (id) => {
     setLoading(true);
     try {
-      const [recipeResponse, priceResponse] = await Promise.all([
+      const [recipeResponse, priceResponse, similarResponse] = await Promise.all([
         axios.get(`${BASE_URL}/${id}/information`, {
           params: {
             apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
@@ -68,11 +70,37 @@ function RecipeSearch() {
             apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
           },
         }),
+        axios.get(`${BASE_URL}/${id}/similar`, {
+          params: {
+            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+            number: 3, // Number of similar recipes to fetch
+          },
+        }),
       ]);
       setSelectedRecipe(recipeResponse.data);
       setPriceBreakdown(priceResponse.data);
+      setSimilarRecipes(similarResponse.data);
     } catch (error) {
       console.error('Error fetching recipe details:', error);
+    }
+    setLoading(false);
+  };
+
+  const getRandomRecipe = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${BASE_URL}/random`, {
+        params: {
+          apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+          number: 1,
+        },
+      });
+      setRandomRecipe(response.data.recipes[0]);
+      setSelectedRecipe(response.data.recipes[0]);
+      setPriceBreakdown(null); 
+      setServings(response.data.recipes[0].servings);
+    } catch (error) {
+      console.error('Error fetching random recipe:', error);
     }
     setLoading(false);
   };
@@ -165,6 +193,24 @@ function RecipeSearch() {
     );
   };
 
+  const renderSimilarRecipes = () => {
+    if (!similarRecipes.length) return null;
+    return (
+      <div>
+        <h4>Similar Recipes</h4>
+        <ul>
+          {similarRecipes.map((recipe) => (
+            <li key={recipe.id}>
+              <a href="#" onClick={() => getRecipeDetails(recipe.id)}>
+                {recipe.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <div>
       <input
@@ -174,6 +220,7 @@ function RecipeSearch() {
         placeholder="Search recipes..."
       />
       <button onClick={searchRecipes}>Search</button>
+      <button onClick={getRandomRecipe}>Get Random Recipe</button>
       
       {/* Add filter inputs here */}
       
@@ -200,6 +247,7 @@ function RecipeSearch() {
           {renderNutritionInfo()}
           {renderInstructions()}
           {renderPriceBreakdown()}
+          {renderSimilarRecipes()}
         </div>
       )}
     </div>
