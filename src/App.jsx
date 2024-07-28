@@ -4,6 +4,9 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from 'react-router-dom';
+import React from 'react'
+import RecipeSearch from './components/RecipeSearch'
+import './App.css'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,6 +18,15 @@ const router = createBrowserRouter(
     </Route>
   )
 );
+function App() {
+  return (
+    <div className="App">
+      <h1>Recipe Search</h1>
+      <RecipeSearch />
+    </div>
+  )
+}
+
 
 const App = () => {
 
