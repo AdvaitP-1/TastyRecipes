@@ -9,7 +9,7 @@ const RecipeCard = () => {
 
     useEffect(() => {
         const fetchRandomRecipe = async () => {
-            const apiKey = '4d1c161985fa40ca997a77c4d2aef7b3';
+            const apiKey = '9daaf7f5c3444f169986f29be8e5ff12';
             try {
                 const response = await fetch(`https://api.spoonacular.com/recipes/random?apiKey=${apiKey}`);
                 const data = await response.json();

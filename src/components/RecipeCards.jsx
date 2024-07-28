@@ -9,7 +9,7 @@ const RecipeListings = ({ isHome = false }) => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const apiKey = '4d1c161985fa40ca997a77c4d2aef7b3';  // Make sure to use a valid API key
+      const apiKey = '9daaf7f5c3444f169986f29be8e5ff12';  // Make sure to use a valid API key
       const number = isHome ? 3 : 9; // Fetch 3 recipes for home page, 9 for browse page
       const apiUrl = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=${number}`;
       try {

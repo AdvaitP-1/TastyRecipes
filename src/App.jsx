@@ -8,12 +8,14 @@ import {
 import HomePage from './pages/HomePage';
 import MainLayout from './layouts/MyMainLayout';
 import RecipeSearch from './pages/RecipeSearch';
+import Recipe from './pages/Recipe';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<MainLayout />}>
       <Route index element={<HomePage />} />
-      <Route path='search' element={<RecipeSearch />} />
+      <Route path='/recipe' element={<RecipeSearch />} />
+      <Route path='/recipe/:id' element={<Recipe />} />
     </Route>
   )
 );
