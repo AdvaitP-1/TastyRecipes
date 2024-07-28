@@ -85,7 +85,6 @@ function RecipeSearch() {
     setLoading(false);
   };
 
-<<<<<<< HEAD
   const getRandomRecipe = async () => {
     setLoading(true);
     try {
@@ -95,9 +94,8 @@ function RecipeSearch() {
           number: 1,
         },
       });
-      setRandomRecipe(response.data.recipes[0]);
       setSelectedRecipe(response.data.recipes[0]);
-      setPriceBreakdown(null); 
+      setPriceBreakdown(null);
       setServings(response.data.recipes[0].servings);
     } catch (error) {
       console.error('Error fetching random recipe:', error);
@@ -105,8 +103,6 @@ function RecipeSearch() {
     setLoading(false);
   };
 
-=======
->>>>>>> 1b59bfa239dd507765c8e4e62d066c3605eac6a8
   const renderNutritionInfo = () => {
     if (!selectedRecipe || !selectedRecipe.nutrition) return null;
     const { calories, carbs, fat, protein } = selectedRecipe.nutrition;
@@ -239,41 +235,6 @@ function RecipeSearch() {
           >
             Search
           </button>
-    <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search recipes..."
-      />
-      <button onClick={searchRecipes}>Search</button>
-      
-      {/* Add filter inputs here */}
-      
-      {loading && <p>Loading...</p>}
-
-      <div>
-        {recipes.map((recipe) => (
-          <div key={recipe.id}>
-            <h3>{recipe.title}</h3>
-            <img src={recipe.image} alt={recipe.title} style={{width: '200px'}} />
-            <button onClick={() => getRecipeDetails(recipe.id)}>
-              View Recipe Details
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {selectedRecipe && (
-        <div>
-          <h3>{selectedRecipe.title}</h3>
-          <img src={selectedRecipe.image} alt={selectedRecipe.title} style={{width: '400px'}} />
-          {renderCookingInfo()}
-          {renderIngredients()}
-          {renderNutritionInfo()}
-          {renderInstructions()}
-          {renderPriceBreakdown()}
-          {renderSimilarRecipes()}
         </div>
         
         <button 
