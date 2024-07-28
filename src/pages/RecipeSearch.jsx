@@ -42,7 +42,7 @@ function RecipeSearch() {
     try {
       const response = await axios.get(`${BASE_URL}/complexSearch`, {
         params: {
-          apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+          apiKey: API_KEY,
           query: query,
           ...filters,
           addRecipeInformation: true,
@@ -61,19 +61,19 @@ function RecipeSearch() {
       const [recipeResponse, priceResponse, similarResponse] = await Promise.all([
         axios.get(`${BASE_URL}/${id}/information`, {
           params: {
-            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+            apiKey: API_KEY,
             includeNutrition: true,
           },
         }),
         axios.get(`${BASE_URL}/${id}/priceBreakdownWidget.json`, {
           params: {
-            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+            apiKey: API_KEY,
           },
         }),
         axios.get(`${BASE_URL}/${id}/similar`, {
           params: {
-            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
-            number: 3, // Number of similar recipes to fetch
+            apiKey: API_KEY,
+            number: 3,
           },
         }),
       ]);
@@ -91,7 +91,7 @@ function RecipeSearch() {
     try {
       const response = await axios.get(`${BASE_URL}/random`, {
         params: {
-          apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+          apiKey: API_KEY,
           number: 1,
         },
       });
@@ -109,12 +109,14 @@ function RecipeSearch() {
     if (!selectedRecipe || !selectedRecipe.nutrition) return null;
     const { calories, carbs, fat, protein } = selectedRecipe.nutrition;
     return (
-      <div>
-        <h4>Nutrition Information</h4>
-        <p>Calories: {calories}</p>
-        <p>Carbs: {carbs}</p>
-        <p>Fat: {fat}</p>
-        <p>Protein: {protein}</p>
+      <div className="mb-6">
+        <SectionTitle>Nutrition Information</SectionTitle>
+        <ul className="list-disc pl-5">
+          <li>Calories: {calories}</li>
+          <li>Carbs: {carbs}</li>
+          <li>Fat: {fat}</li>
+          <li>Protein: {protein}</li>
+        </ul>
       </div>
     );
   };
@@ -122,11 +124,11 @@ function RecipeSearch() {
   const renderInstructions = () => {
     if (!selectedRecipe || !selectedRecipe.instructions) return null;
     return (
-      <div>
-        <h4>Instructions</h4>
-        <ol>
+      <div className="mb-6">
+        <SectionTitle>Instructions</SectionTitle>
+        <ol className="list-decimal pl-5">
           {selectedRecipe.analyzedInstructions[0].steps.map((step, index) => (
-            <li key={index}>{step.step}</li>
+            <li key={index} className="mb-2">{step.step}</li>
           ))}
         </ol>
       </div>
@@ -136,9 +138,9 @@ function RecipeSearch() {
   const renderIngredients = () => {
     if (!selectedRecipe || !selectedRecipe.extendedIngredients) return null;
     return (
-      <div>
-        <h4>Ingredients</h4>
-        <ul>
+      <div className="mb-6">
+        <SectionTitle>Ingredients</SectionTitle>
+        <ul className="list-disc pl-5">
           {selectedRecipe.extendedIngredients.map((ingredient, index) => (
             <li key={index}>
               {calculateAdjustedAmount(ingredient.amount, selectedRecipe.servings)} {ingredient.unit} {ingredient.name}
@@ -152,18 +154,20 @@ function RecipeSearch() {
   const renderCookingInfo = () => {
     if (!selectedRecipe) return null;
     return (
-      <div>
-        <h4>Cooking Information</h4>
+      <div className="mb-6">
+        <SectionTitle>Cooking Information</SectionTitle>
         <p>Preparation Time: {selectedRecipe.readyInMinutes} minutes</p>
-        <p>
-          Servings: 
+        <div className="flex items-center mt-2">
+          <label htmlFor="servings" className="mr-2">Servings:</label>
           <input 
+            id="servings"
             type="number" 
             value={servings} 
             onChange={(e) => adjustServings(parseInt(e.target.value))} 
             min="1"
+            className="border border-orange-300 rounded px-2 py-1 w-16"
           />
-        </p>
+        </div>
       </div>
     );
   };
@@ -175,11 +179,11 @@ function RecipeSearch() {
     const costPerServing = (totalCost / servings).toFixed(2);
     
     return (
-      <div>
-        <h4>Price Breakdown (Adjusted for {servings} servings)</h4>
+      <div className="mb-6">
+        <SectionTitle>Price Breakdown (Adjusted for {servings} servings)</SectionTitle>
         <p>Total Cost: ${totalCost}</p>
         <p>Cost per Serving: ${costPerServing}</p>
-        <ul>
+        <ul className="list-disc pl-5 mt-2">
           {priceBreakdown.ingredients.map((ingredient, index) => {
             const adjustedPrice = calculateAdjustedPrice(ingredient.price / 100, originalServings);
             return (
@@ -196,14 +200,17 @@ function RecipeSearch() {
   const renderSimilarRecipes = () => {
     if (!similarRecipes.length) return null;
     return (
-      <div>
-        <h4>Similar Recipes</h4>
-        <ul>
+      <div className="mb-6">
+        <SectionTitle>Similar Recipes</SectionTitle>
+        <ul className="list-disc pl-5">
           {similarRecipes.map((recipe) => (
             <li key={recipe.id}>
-              <a href="#" onClick={() => getRecipeDetails(recipe.id)}>
+              <button 
+                onClick={() => getRecipeDetails(recipe.id)}
+                className="text-orange-600 hover:text-orange-700 underline"
+              >
                 {recipe.title}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
@@ -212,46 +219,79 @@ function RecipeSearch() {
   };
 
   return (
-    <div>
-      <input
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search recipes..."
-      />
-      <button onClick={searchRecipes}>Search</button>
-      <button onClick={getRandomRecipe}>Get Random Recipe</button>
-      
-      {/* Add filter inputs here */}
-      
-      {loading && <p>Loading...</p>}
-
-      <div>
-        {recipes.map((recipe) => (
-          <div key={recipe.id}>
-            <h3>{recipe.title}</h3>
-            <img src={recipe.image} alt={recipe.title} style={{width: '200px'}} />
-            <button onClick={() => getRecipeDetails(recipe.id)}>
-              View Recipe Details
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {selectedRecipe && (
-        <div>
-          <h3>{selectedRecipe.title}</h3>
-          <img src={selectedRecipe.image} alt={selectedRecipe.title} style={{width: '400px'}} />
-          {renderCookingInfo()}
-          {renderIngredients()}
-          {renderNutritionInfo()}
-          {renderInstructions()}
-          {renderPriceBreakdown()}
-          {renderSimilarRecipes()}
+    <div className="bg-orange-50 min-h-screen p-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-orange-600 mb-8 text-center">Recipe Search</h1>
+        
+        <div className="flex mb-6">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search recipes..."
+            className="flex-grow p-2 border-2 border-orange-300 rounded-l-md focus:outline-none focus:border-orange-500"
+          />
+          <button 
+            onClick={searchRecipes}
+            className="bg-orange-500 text-white px-4 py-2 rounded-r-md hover:bg-orange-600 transition duration-300"
+          >
+            Search
+          </button>
         </div>
-      )}
+        
+        <button 
+          onClick={getRandomRecipe}
+          className="w-full bg-orange-400 text-white px-4 py-2 rounded-md hover:bg-orange-500 transition duration-300 mb-6"
+        >
+          Get Random Recipe
+        </button>
+        
+        {loading && <p className="text-orange-600 text-center">Loading...</p>}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {recipes.map((recipe) => (
+            <div key={recipe.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+              <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-orange-700 mb-2">{recipe.title}</h3>
+                <button 
+                  onClick={() => getRecipeDetails(recipe.id)}
+                  className="bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-600 transition duration-300 w-full"
+                >
+                  View Recipe Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {selectedRecipe && (
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <h2 className="text-2xl font-bold text-orange-600 mb-4">{selectedRecipe.title}</h2>
+            <img src={selectedRecipe.image} alt={selectedRecipe.title} className="w-full h-64 object-cover rounded-md mb-6" />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                {renderCookingInfo()}
+                {renderIngredients()}
+              </div>
+              <div>
+                {renderNutritionInfo()}
+                {renderPriceBreakdown()}
+              </div>
+            </div>
+            
+            {renderInstructions()}
+            {renderSimilarRecipes()}
+          </div>
+        )}
+      </div>
     </div>
   );
+}
+
+function SectionTitle({ children }) {
+  return <h4 className="text-xl font-semibold text-orange-600 mb-2">{children}</h4>;
 }
 
 export default RecipeSearch;
