@@ -33,17 +33,10 @@ const Navbar = () => {
                   >Home
                 </NavLink>
                 <NavLink
-                  to="/search"z
+                  to="/search"
                   className={linkClass}
                   >Recipes
                 </NavLink>
-                
-                <NavLink
-                  to="/sort"
-                  className={linkClass}
-                  >Nutrition Sort
-                </NavLink>
-                
               </div>
             </div>
           </div>
