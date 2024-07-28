@@ -16,7 +16,6 @@ function RecipeSearch() {
   const [loading, setLoading] = useState(false);
   const [servings, setServings] = useState(0);
   const [priceBreakdown, setPriceBreakdown] = useState(null);
-  const [randomRecipe, setRandomRecipe] = useState(null);
   const [similarRecipes, setSimilarRecipes] = useState([]);
 
   useEffect(() => {
@@ -42,7 +41,7 @@ function RecipeSearch() {
     try {
       const response = await axios.get(`${BASE_URL}/complexSearch`, {
         params: {
-          apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+          apiKey: API_KEY,
           query: query,
           ...filters,
           addRecipeInformation: true,
@@ -82,25 +81,6 @@ function RecipeSearch() {
       setSimilarRecipes(similarResponse.data);
     } catch (error) {
       console.error('Error fetching recipe details:', error);
-    }
-    setLoading(false);
-  };
-
-  const getRandomRecipe = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${BASE_URL}/random`, {
-        params: {
-          apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
-          number: 1,
-        },
-      });
-      setRandomRecipe(response.data.recipes[0]);
-      setSelectedRecipe(response.data.recipes[0]);
-      setPriceBreakdown(null); 
-      setServings(response.data.recipes[0].servings);
-    } catch (error) {
-      console.error('Error fetching random recipe:', error);
     }
     setLoading(false);
   };
@@ -220,7 +200,6 @@ function RecipeSearch() {
         placeholder="Search recipes..."
       />
       <button onClick={searchRecipes}>Search</button>
-      <button onClick={getRandomRecipe}>Get Random Recipe</button>
       
       {/* Add filter inputs here */}
       
