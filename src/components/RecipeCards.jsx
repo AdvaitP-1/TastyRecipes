@@ -31,7 +31,7 @@ const RecipeListings = ({ isHome = false }) => {
       <div className='container-xl lg:container m-auto'>
         <h2 className='text-3xl font-bold text-orange-500 mb-6 text-center'>
           {isHome ? 'Featured Recipes' : 'Browse Recipes'}
-        </h2>;
+        </h2>
 
         {loading ? (
           <Spinner loading={loading} />
@@ -44,7 +44,7 @@ const RecipeListings = ({ isHome = false }) => {
         )}
       </div>
     </section>
-  );
-};
+  )
+}
 
 export default RecipeListings;
