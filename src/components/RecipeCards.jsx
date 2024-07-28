@@ -9,15 +9,21 @@ const RecipeListings = ({ isHome = false }) => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const apiKey = 'apike';
+      const apiKey = '4d1c161985fa40ca997a77c4d2aef7b3';  // Make sure to use a valid API key
       const number = isHome ? 3 : 9; // Fetch 3 recipes for home page, 9 for browse page
       const apiUrl = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=${number}`;
       try {
         const res = await fetch(apiUrl);
         const data = await res.json();
-        setRecipes(data.recipes);
+        if (data.recipes) {
+          setRecipes(data.recipes);
+        } else {
+          console.error('Error: Recipes data not found in the response');
+          setRecipes([]);  // Set to empty array if response doesn't contain recipes
+        }
       } catch (error) {
-        console.log('Error fetching recipes', error);
+        console.error('Error fetching recipes:', error);
+        setRecipes([]);  // Set to empty array on error
       } finally {
         setLoading(false);
       }
@@ -37,14 +43,18 @@ const RecipeListings = ({ isHome = false }) => {
           <Spinner loading={loading} />
         ) : (
           <div className='grid grid-cols-1 md:grid-cols-3 gap-6'>
-            {recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
+            {recipes.length > 0 ? (
+              recipes.map((recipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+              ))
+            ) : (
+              <p>No recipes found.</p>
+            )}
           </div>
         )}
       </div>
     </section>
-  )
+  );
 }
 
 export default RecipeListings;
