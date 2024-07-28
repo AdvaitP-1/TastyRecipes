@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const API_KEY = '4d1c161985fa40ca997a77c4d2aef7b3';
+const API_KEY = '9daaf7f5c3444f169986f29be8e5ff12';
 const BASE_URL = 'https://api.spoonacular.com/recipes';
 
 function RecipeSearch() {
@@ -41,7 +41,7 @@ function RecipeSearch() {
     try {
       const response = await axios.get(`${BASE_URL}/complexSearch`, {
         params: {
-          apiKey: API_KEY,
+          apiKey: '9daaf7f5c3444f169986f29be8e5ff12',
           query: query,
           ...filters,
           addRecipeInformation: true,
@@ -60,18 +60,18 @@ function RecipeSearch() {
       const [recipeResponse, priceResponse, similarResponse] = await Promise.all([
         axios.get(`${BASE_URL}/${id}/information`, {
           params: {
-            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+            apiKey: '9daaf7f5c3444f169986f29be8e5ff12',
             includeNutrition: true,
           },
         }),
         axios.get(`${BASE_URL}/${id}/priceBreakdownWidget.json`, {
           params: {
-            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+            apiKey: '9daaf7f5c3444f169986f29be8e5ff12',
           },
         }),
         axios.get(`${BASE_URL}/${id}/similar`, {
           params: {
-            apiKey: '4d1c161985fa40ca997a77c4d2aef7b3',
+            apiKey: '9daaf7f5c3444f169986f29be8e5ff12',
             number: 3, // Number of similar recipes to fetch
           },
         }),
