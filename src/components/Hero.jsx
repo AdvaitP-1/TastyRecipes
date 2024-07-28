@@ -1,3 +1,4 @@
+// eslint-disable-next-line react/prop-types
 const Hero = ({title="Repository of Recipes" ,subtitle="Meal-prep doesn't need to be so hard"}) => {
     return (
       <>

@@ -16,4 +16,4 @@ const Spinner = ({ loading }) => {
     />
   );
 };
-export default Spinner;npm
+export default Spinner;
