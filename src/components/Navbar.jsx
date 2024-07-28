@@ -2,7 +2,7 @@ import logo from '../assets/images/
 
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+    <div>nav</div>
   )
 }
 
