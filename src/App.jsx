@@ -4,16 +4,20 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from 'react-router-dom';
-import React from 'react'
-import RecipeSearch from './components/RecipeSearch'
-import './App.css'
+import HomePage from './pages/HomePage';
+import MainLayout from './layouts/MainLayout.JSX';
+import SearchPage from './pages/SearchPage.JSX';
+import NutritionPage from './pages/NutritionPage.jsx';
+import NotFoundPage from './pages/NotFoundPage';
+
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<MainLayout/>}>
       <Route index element={<HomePage/>} />
-      <Route path='/search' element={<JobsPage/>} />
-      <Route path='/sort' element={<JobPage/>} /> 
+      <Route path='/search' element={<SearchPage/>} />
+      <Route path='/sort' element={<NutritionPage/>} /> 
       <Route path='*' element={<NotFoundPage/>} />
     </Route>
   )
