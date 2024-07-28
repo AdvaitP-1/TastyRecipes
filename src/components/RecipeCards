@@ -9,7 +9,7 @@ const RecipeListings = ({ isHome = false }) => {
 
   useEffect(() => {
     const fetchRecipes = async () => {
-      const apiKey = 'YOUR_SPOONACULAR_API_KEY';
+      const apiKey = 'apike';
       const number = isHome ? 3 : 9; // Fetch 3 recipes for home page, 9 for browse page
       const apiUrl = `https://api.spoonacular.com/recipes/random?apiKey=${apiKey}&number=${number}`;
       try {
